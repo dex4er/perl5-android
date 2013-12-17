@@ -48,17 +48,20 @@ fresh_perl_is("for (qw(@locales)) {\n" . <<'EOF',
 EOF
     "", {}, "no locales where LC_NUMERIC breaks");
 
-fresh_perl_is("for (qw(@locales)) {\n" . <<'EOF',
-    use POSIX qw(locale_h);
-    use locale;
-    my $in = 4.2;
-    my $s = sprintf "%g", $in; # avoid any constant folding bugs
-    next if $s eq "4.2";
-    print "$_ $s\n";
-}
+{
+    local $ENV{LC_NUMERIC};
+    local $ENV{LC_ALL}; # so it never overrides LC_NUMERIC
+    fresh_perl_is("for (qw(@locales)) {\n" . <<'EOF',
+        use POSIX qw(locale_h);
+        use locale;
+        my $in = 4.2;
+        my $s = sprintf "%g", $in; # avoid any constant folding bugs
+        next if $s eq "4.2";
+        print "$_ $s\n";
+    }
 EOF
-    "", {}, "LC_NUMERIC without setlocale() has no effect in any locale");
-
+    "", {}, "LC_NUMERIC without environment nor setlocale() has no effect in any locale");
+}
 
 # try to find out a locale where LC_NUMERIC makes a difference
 my $original_locale = setlocale(LC_NUMERIC);

@@ -2,6 +2,7 @@
 #include "EXTERN.h"
 #include "perl.h"
 #include "XSUB.h"
+#include "fakesdio.h"
 
 typedef SV *SVREF;
 typedef PTR_TBL_t *XS__APItest__PtrTable;

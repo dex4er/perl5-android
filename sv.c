@@ -10463,6 +10463,7 @@ Perl_sv_vcatpvfn_flags(pTHX_ SV *const sv, const char *const pat, const STRLEN p
 		   a Configure test for this.  */
 		if (digits && digits < sizeof(ebuf) - NV_DIG - 10) {
 		     /* 0, point, slack */
+                    STORE_LC_NUMERIC_SET_TO_NEEDED();
 		    V_Gconvert(nv, (int)digits, 0, ebuf);
 		    sv_catpv_nomg(sv, ebuf);
 		    if (*ebuf)	/* May return an empty string for digits==0 */
@@ -11323,6 +11324,7 @@ Perl_sv_vcatpvfn_flags(pTHX_ SV *const sv, const char *const pat, const STRLEN p
 		/* See earlier comment about buggy Gconvert when digits,
 		   aka precis is 0  */
 		if ( c == 'g' && precis) {
+                    STORE_LC_NUMERIC_SET_TO_NEEDED();
 		    V_Gconvert((NV)nv, (int)precis, 0, PL_efloatbuf);
 		    /* May return an empty string for digits==0 */
 		    if (*PL_efloatbuf) {
