@@ -4483,7 +4483,7 @@ if test ! -f cppstdin; then
 		# locations but we'll cheat by using the -M flag.
 		echo 'cat >.$$.c; rm -f .$$.u; '"$cc"' ${1+"$@"} -M -c .$$.c 2>/dev/null; test -s .$$.u && awk '"'"'$2 ~ /\.h$/ { print "# 0 \""$2"\"" }'"'"' .$$.u; rm -f .$$.o .$$.u; '"$cc"' -E ${1+"$@"} .$$.c; rm .$$.c' > cppstdin
 	else
-		echo 'cat >.$$.c; '"$cc"' -E ${1+"$@"} .$$.c; rm .$$.c' >cppstdin
+		echo 'cat >.$$.c; '"$cc $cppflags"' -E ${1+"$@"} .$$.c; rm .$$.c' >cppstdin
 	fi
 else
 	echo "Keeping your $hint cppstdin wrapper."
@@ -4581,9 +4581,9 @@ fi
 
 case "$ok" in
 false)
-	cppstdin="$x_cpp"
+	cppstdin="$x_cpp $cppflags"
 	cppminus="$x_minus"
-	cpprun="$x_cpp"
+	cpprun="$x_cpp $cppflags"
 	cpplast="$x_minus"
 	set X $x_cpp
 	shift
