@@ -2722,7 +2722,7 @@ Perl__core_swash_init(pTHX_ const char* pkg, const char* name, SV *listsv, I32 m
 
         /* Here, we have computed the union of all the passed-in data.  It may
          * be that there was an inversion list in the swash which didn't get
-         * touched; otherwise save the one computed one */
+         * touched; otherwise save the computed one */
 	if (! invlist_in_swash_is_valid
             && (int) _invlist_len(swash_invlist) > invlist_swash_boundary)
         {
@@ -2734,6 +2734,8 @@ Perl__core_swash_init(pTHX_ const char* pkg, const char* name, SV *listsv, I32 m
 	    if (swash_invlist_unclaimed) swash_invlist_unclaimed = FALSE;
 	    else SvREFCNT_inc_simple_void_NN(swash_invlist);
 	}
+
+        SvREADONLY_on(swash_invlist);
 
         /* Use the inversion list stand-alone if small enough */
         if ((int) _invlist_len(swash_invlist) <= invlist_swash_boundary) {
@@ -3840,6 +3842,7 @@ Perl__swash_to_invlist(pTHX_ SV* const swash)
 	sv_free(other); /* through with it! */
     }
 
+    SvREADONLY_on(invlist);
     return invlist;
 }
 

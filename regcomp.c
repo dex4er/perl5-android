@@ -4658,8 +4658,7 @@ PerlIO_printf(Perl_debug_log, "LHS=%"UVdf" RHS=%"UVdf"\n",
                     /* FALL THROUGH */
 
 		case POSIXL:
-                    classnum = FLAGS(scan);
-                    namedclass = classnum_to_namedclass(classnum) + invert;
+                    namedclass = classnum_to_namedclass(FLAGS(scan)) + invert;
                     if (flags & SCF_DO_STCLASS_AND) {
                         bool was_there = cBOOL(
                                           ANYOF_POSIXL_TEST(data->start_class,
@@ -4705,12 +4704,11 @@ PerlIO_printf(Perl_debug_log, "LHS=%"UVdf" RHS=%"UVdf"\n",
                     invert = 1;
                     /* FALL THROUGH */
 		case POSIXA:
-                    classnum = FLAGS(scan);
-                    if (classnum == _CC_ASCII) {
+                    if (FLAGS(scan) == _CC_ASCII) {
                         my_invlist = PL_XPosix_ptrs[_CC_ASCII];
                     }
                     else {
-                        _invlist_intersection(PL_XPosix_ptrs[classnum],
+                        _invlist_intersection(PL_XPosix_ptrs[FLAGS(scan)],
                                               PL_XPosix_ptrs[_CC_ASCII],
                                               &my_invlist);
                     }
@@ -4722,8 +4720,7 @@ PerlIO_printf(Perl_debug_log, "LHS=%"UVdf" RHS=%"UVdf"\n",
                     /* FALL THROUGH */
 		case POSIXD:
 		case POSIXU:
-                    classnum = FLAGS(scan);
-                    my_invlist = invlist_clone(PL_XPosix_ptrs[classnum]);
+                    my_invlist = invlist_clone(PL_XPosix_ptrs[FLAGS(scan)]);
 
                     /* NPOSIXD matches all upper Latin1 code points unless the
                      * target string being matched is UTF-8, which is
@@ -7448,6 +7445,19 @@ S_reg_scan_name(pTHX_ RExC_state_t *pRExC_state, U32 flags)
  * interfaces are highly subject to change, so as much as possible is static to
  * this file.  An inversion list is here implemented as a malloc'd C UV array
  * as an SVt_INVLIST scalar.
+
+    An inversion list is an ordered list of code points, always beginning with
+    0, that describe the complete set that match a given property.  The
+   representation is often compact in real-world applications; and set
+   operations, such as union and intersection can be efficiently done on them.
+   The code points that are in the list are all the lowest numbered ones that
+   each begins a range of consecutive code points that either all match the
+   property or all don't match.  If the Ith element of the list begins a range
+   that matches, then the (I+1)th element begins a range that doesn't match.
+   An auxiliary boolean bit indicates if the range starting at 0 matches or
+   doesn't match; the matching of all the other ranges follows.  If the final
+   range in the list matches, it is considered to extend to infinity.  To
+   complement or invert the inversion list, simply toggle the auxiliary bit.
  *
  * An inversion list for Unicode is an array of code points, sorted by ordinal
  * number.  The zeroth element is the first code point in the list.  The 1th
@@ -7686,6 +7696,8 @@ Perl__new_invlist_C_array(pTHX_ const UV* const list)
 
     /* Initialize the iteration pointer. */
     invlist_iterfinish(invlist);
+
+    SvREADONLY_on(invlist);
 
     return invlist;
 }
