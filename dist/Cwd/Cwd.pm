@@ -367,6 +367,11 @@ sub _backtick_pwd {
     $cwd;
 }
 
+# Android has working getcwd
+if ($^O eq 'android') {
+    *cwd = \&getcwd;
+}
+
 # Since some ports may predefine cwd internally (e.g., NT)
 # we take care not to override an existing definition for cwd().
 
