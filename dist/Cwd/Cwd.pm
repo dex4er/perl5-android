@@ -341,6 +341,9 @@ foreach my $try ('/bin/pwd',
         last;
     }
 }
+if ($^O eq 'android') {
+    $pwd_cmd = '/system/bin/sh -c pwd';
+}
 my $found_pwd_cmd = defined($pwd_cmd);
 unless ($pwd_cmd) {
     # Isn't this wrong?  _backtick_pwd() will fail if somenone has
@@ -365,11 +368,6 @@ sub _backtick_pwd {
     # `pwd` may fail e.g. if the disk is full
     chomp($cwd) if defined $cwd;
     $cwd;
-}
-
-# Android has working getcwd
-if ($^O eq 'android') {
-    *cwd = \&getcwd;
 }
 
 # Since some ports may predefine cwd internally (e.g., NT)
