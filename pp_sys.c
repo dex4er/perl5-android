@@ -3889,7 +3889,7 @@ nope:
 
 PP(pp_telldir)
 {
-#if defined(HAS_TELLDIR) || defined(telldir)
+#if defined(HAS_TELLDIR) && defined(telldir)
     dVAR; dSP; dTARGET;
  /* XXX does _anyone_ need this? --AD 2/20/1998 */
  /* XXX netbsd still seemed to.
