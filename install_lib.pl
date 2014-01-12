@@ -4,7 +4,7 @@
 # Probably installhtml needs to join the club.
 
 use strict;
-use vars qw($Is_VMS $Is_W32 $Is_OS2 $Is_Cygwin $Is_Darwin $Is_NetWare
+use vars qw($Is_VMS $Is_W32 $Is_OS2 $Is_Cygwin $Is_Darwin $Is_NetWare $Is_Android
 	    %opts $packlist);
 use subs qw(unlink link chmod);
 
@@ -47,6 +47,7 @@ $Is_OS2 = $^O eq 'os2';
 $Is_Cygwin = $^O eq 'cygwin';
 $Is_Darwin = $^O eq 'darwin';
 $Is_NetWare = $Config{osname} eq 'NetWare';
+$Is_Android = $^O eq 'android';
 
 sub unlink {
     my(@names) = @_;
