@@ -33,6 +33,7 @@ BEGIN {
     $Is{Interix} = $^O eq 'interix';
     $Is{SunOS4}  = $^O eq 'sunos';
     $Is{Solaris} = $^O eq 'solaris';
+    $Is{Android} = $^O eq 'android';
     $Is{SunOS}   = $Is{SunOS4} || $Is{Solaris};
     $Is{BSD}     = ($^O =~ /^(?:free|net|open)bsd$/ or
                    grep( $^O eq $_, qw(bsdos interix dragonfly) )
@@ -942,6 +943,8 @@ $(INST_DYNAMIC): $(OBJECT) $(MYEXTLIB) $(BOOTSTRAP) $(INST_ARCHAUTODIR)$(DFSEP).
         } elsif ($Config{'lddlflags'} =~ /-R/) {
             $libs .= ' -L$(PERL_INC) -R$(INSTALLARCHLIB)/CORE -R$(PERL_ARCHLIB)/CORE -lperl';
         }
+    } elsif ($Is{Android} && $Config{'useshrplib'} eq 'true') {
+        $libs .= ' -L$(PERL_INC) -lperl';
     }
 
     my $ld_run_path_shell = "";
