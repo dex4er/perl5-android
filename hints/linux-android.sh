@@ -7,6 +7,7 @@
 afs='false'
 d_csh='undef'
 useshrplib='true'
+d_libname_unique='define'
 i_db='undef'
 i_gdbm='undef'
 i_ndbm='undef'
@@ -32,6 +33,7 @@ d_useshellcmds='define'
 d_libname_unique='define'
 sh='/system/bin/sh'
 libswanted="$libswanted m"
+d_useshellcmds='define'
 libs='-ldl -lm -lc'
 libc='/system/lib/libc.so'
 
