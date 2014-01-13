@@ -138,9 +138,7 @@ sub get_files {
 	     ) {
 	# Some Linuxes have weird errno.hs which generate
 	# no #file or #line directives
-	my $usrinc = $Config{usrinc};
-	my $linux_errno_h = -e "$usrinc/errno.h" ?
-	    "$usrinc/errno.h" : -e '/usr/include/errno.h' ?
+	my $linux_errno_h = -e '/usr/include/errno.h' ?
 	    '/usr/include/errno.h' : '/usr/local/include/errno.h';
 	$file{$linux_errno_h} = 1;
     } elsif ($^O eq 'haiku') {
