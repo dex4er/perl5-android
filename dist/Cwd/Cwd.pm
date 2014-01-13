@@ -341,9 +341,16 @@ foreach my $try ('/bin/pwd',
         last;
     }
 }
-if ($^O eq 'linux-android') {
-    $pwd_cmd = '/system/bin/sh -c pwd';
+
+# Android has a built-in pwd. Using $pwd_cmd will DTRT if
+# this perl was compiled with -Dd_useshellcmds, which is the
+# default for Android, but the block below is needed for the
+# miniperl running on the host when cross-compiling, and
+# potentially for native builds with -Ud_useshellcmds.
+if ($^O =~ /android/) {
+    $pwd_cmd = "$Config::Config{sh} -c pwd"
 }
+
 my $found_pwd_cmd = defined($pwd_cmd);
 unless ($pwd_cmd) {
     # Isn't this wrong?  _backtick_pwd() will fail if somenone has
