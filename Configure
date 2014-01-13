@@ -3298,7 +3298,7 @@ EOM
 			case "$3" in
 			*)	osvers="$3" ;;
 			esac
-			$test -f /system/lib/libandroid.so && osname=android
+			$test -f /system/lib/libandroid.so && osname=linux-android
 			;;
 		MiNT)	osname=mint
 			;;
@@ -7468,7 +7468,7 @@ esac
 : for archive libraries.  Thank you, Linux.
 case "$nm_so_opt" in
 '')	case "$myuname" in
-	*linux*|gnu*|android)
+	*linux*|gnu*)
 		if $nm --help | $grep 'dynamic' > /dev/null 2>&1; then
 			nm_so_opt='--dynamic'
 		fi
@@ -7962,7 +7962,7 @@ EOM
 			;;
 		*)  case "$osname" in
 	                darwin) dflt='none' ;;
-			linux*|svr4*|esix*|solaris|nonstopux|android) dflt='-fPIC' ;;
+			linux*|svr4*|esix*|solaris|nonstopux) dflt='-fPIC' ;;
 			*)	dflt='-fpic' ;;
 		    esac ;;
 	    esac ;;
@@ -8047,7 +8047,7 @@ EOM
 			      '') dflt="$dflt +vnocompatwarnings" ;;
 			      esac
 			      ;;
-			linux|irix*|gnu*|android)  dflt="-shared $optimize" ;;
+			linux*|irix*|gnu*)  dflt="-shared $optimize" ;;
 			next)  dflt='none' ;;
 			solaris) # See [perl #66604].  On Solaris 11, gcc -m64 on amd64
 				# appears not to understand -G.  gcc versions at
@@ -8117,7 +8117,7 @@ say "none".
 EOM
     case "$ccdlflags" in
     '') case "$osname" in
-	    linux|hpux|gnu*|android)	dflt='-Wl,-E' ;;
+	    linux*|hpux|gnu*)	dflt='-Wl,-E' ;;
 	    next|sunos)	dflt='none' ;;
 	    *)		dflt='none' ;;
 	    esac ;;
@@ -8250,7 +8250,7 @@ true)
 			dflt=libperl.5.$so
 			# XXX How handle the --version stuff for MAB?
 			;;
-		linux*|gnu*|android)  # ld won't link with a bare -lperl otherwise.
+		linux*|gnu*)  # ld won't link with a bare -lperl otherwise.
 			dflt=libperl.$so
 			;;
 		cygwin*) # ld links now against the dll directly
@@ -8341,7 +8341,7 @@ if "$useshrplib"; then
 	freebsd|mirbsd|netbsd|openbsd|interix|dragonfly)
 		xxx="-Wl,-R$shrpdir"
 		;;
-	bsdos|linux|irix*|dec_osf|gnu*|android)
+	bsdos|linux*|irix*|dec_osf|gnu*)
 		xxx="-Wl,-rpath,$shrpdir"
 		;;
 	next)

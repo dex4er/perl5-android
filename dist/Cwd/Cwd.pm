@@ -341,7 +341,7 @@ foreach my $try ('/bin/pwd',
         last;
     }
 }
-if ($^O eq 'android') {
+if ($^O eq 'linux-android') {
     $pwd_cmd = '/system/bin/sh -c pwd';
 }
 my $found_pwd_cmd = defined($pwd_cmd);

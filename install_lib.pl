@@ -47,7 +47,7 @@ $Is_OS2 = $^O eq 'os2';
 $Is_Cygwin = $^O eq 'cygwin';
 $Is_Darwin = $^O eq 'darwin';
 $Is_NetWare = $Config{osname} eq 'NetWare';
-$Is_Android = $^O eq 'android';
+$Is_Android = $^O eq 'linux-android';
 
 sub unlink {
     my(@names) = @_;

@@ -33,7 +33,7 @@ BEGIN {
     $Is{Interix} = $^O eq 'interix';
     $Is{SunOS4}  = $^O eq 'sunos';
     $Is{Solaris} = $^O eq 'solaris';
-    $Is{Android} = $^O eq 'android';
+    $Is{Android} = $^O eq 'linux-android';
     $Is{SunOS}   = $Is{SunOS4} || $Is{Solaris};
     $Is{BSD}     = ($^O =~ /^(?:free|net|open)bsd$/ or
                    grep( $^O eq $_, qw(bsdos interix dragonfly) )
