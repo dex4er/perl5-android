@@ -348,8 +348,7 @@ foreach my $try ('/bin/pwd',
 # miniperl running on the host when cross-compiling, and
 # potentially for native builds with -Ud_useshellcmds.
 if ($^O =~ /android/) {
-    require Config;
-    $pwd_cmd = "$Config::Config{sh} -c pwd"
+    $pwd_cmd = "/system/bin/sh -c pwd"
 }
 
 my $found_pwd_cmd = defined($pwd_cmd);
