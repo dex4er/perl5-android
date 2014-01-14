@@ -14,8 +14,10 @@ i_ndbm='undef'
 i_dbm='undef'
 i_sdbm='undef'
 useopcode='define'
-man1dir=' '
-man3dir=' '
+man1dir=''
+man3dir=''
+man1ext=''
+man3ext=''
 unset siteman1
 unset siteman3
 unset vendorman1
