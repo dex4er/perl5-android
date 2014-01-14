@@ -398,6 +398,7 @@ if ($Is_Android) {
     my $libdir = "$Config{prefix}/lib";
     CORE::symlink("$installarchlib/CORE/$libperl", "$libdir/$libperl");
     $packlist->{"$libdir/$libperl"} = { from => "$installarchlib/CORE/$libperl",
+                                        type => 'link' };
 }
 
 # Install main perl executables
