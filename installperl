@@ -395,13 +395,9 @@ foreach my $file (@corefiles) {
 
 # Install symlink for Android
 if ($Is_Android) {
-    my @libspath = grep { /\S/ } split /\s+/, $Config{libspath};
-    my $libsdir = shift @libspath;
-    if ($libsdir) {
-        CORE::symlink("$installarchlib/CORE/$libperl", "$libsdir/$libperl");
-        $packlist->{"$libsdir/$libperl"} = { from => "$installarchlib/CORE/$libperl",
-                                             type => 'link' };
-    }
+    my $libdir = "$Config{prefix}/lib";
+    CORE::symlink("$installarchlib/CORE/$libperl", "$libdir/$libperl");
+    $packlist->{"$libdir/$libperl"} = { from => "$installarchlib/CORE/$libperl",
 }
 
 # Install main perl executables
