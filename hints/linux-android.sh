@@ -4,6 +4,7 @@
 
 . ./hints/linux.sh
 
+osvers="`$run getprop ro.build.version.release`"
 afs='false'
 d_csh='undef'
 useshrplib='true'
