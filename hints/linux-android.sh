@@ -26,7 +26,6 @@ d_getservent_r='undef'
 d_getpwnam_r='undef'
 d_getpwuid_r='undef'
 d_getpwent='undef'
-d_useshellcmds='define'
 sh='/system/bin/sh'
 libswanted="$libswanted m"
 d_useshellcmds='define'
