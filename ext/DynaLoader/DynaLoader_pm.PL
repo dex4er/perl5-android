@@ -235,6 +235,32 @@ if ($ENV{PERL_BUILD_EXPAND_CONFIG_VARS} && $ENV{PERL_BUILD_EXPAND_ENV_VARS}) {
 EOT
 }
 
+if ( $Config::Config{d_libname_unique} ) {
+    print OUT <<'EOT';
+sub mod2fname {
+    my $parts = shift;
+    my $so_len = length($Config::Config{dlext})+1;
+    my $name_max = 255; # No easy way to get this here
+    
+    my $libname = "PL_" .  join("__", @$parts);
+    
+    return $libname if (length($libname)+$so_len) <= $name_max;
+    
+    # It's too darned big, so we need to go strip. We use the same
+    # algorithm as xsubpp does. First, strip out doubled __
+    $libname =~ s/__/_/g;
+    return $libname if (length($libname)+$so_len) <= $name_max;
+    
+    # Strip duplicate letters
+    1 while $libname =~ s/(.)\1/\U$1/i;
+    return $libname if (length($libname)+$so_len) <= $name_max;
+    
+    # Still too long. Truncate.
+    $libname = substr($libname, 0, $name_max - $so_len);
+    return $libname;
+}
+EOT
+}
 
 # following long string contains $^O-specific stuff, which is factored out
 print OUT expand_os_specific(<<'EOT');
