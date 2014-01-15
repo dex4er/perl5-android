@@ -28,6 +28,5 @@ d_getpwuid_r='undef'
 d_getpwent='undef'
 sh='/system/bin/sh'
 libswanted="$libswanted m"
-d_useshellcmds='define'
 libs='-ldl -lm -lc'
 libc='/system/lib/libc.so'
