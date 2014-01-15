@@ -37,4 +37,21 @@ sub link {
   return $self->SUPER::link(@_);
 }
 
+sub lib_file {
+  my ($self, $dl_file) = @_;
+
+  $dl_file =~ s/\.[^.]+$//;
+  $dl_file =~ tr/"//d;
+
+  if (defined &DynaLoader::mod2fname) {
+    # DynaLoader::mod2fname() is a builtin func
+    my $lib = defined $self->{module_name} ? DynaLoader::mod2fname([split /::/, $self->{module_name}]) : '';
+
+    # Now know the basename, find directory parts via lib_file
+    my $lib_dir = ($dl_file =~ m,(.*)[/\\],s ? "$1/" : '' );
+
+    return "$lib_dir$lib.$self->{config}{dlext}";
+  }
+}
+
 1;
