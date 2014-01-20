@@ -17,5 +17,5 @@ perllibs=''
 cryptlib=''
 
 d_procselfexe='undef'
-#d_libm_lib_version='undef'
-#useperlio='undef'
+
+ebcdic='undef'
