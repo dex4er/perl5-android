@@ -686,7 +686,7 @@ bitcount.h: generate_uudmap$(HOST_EXE_EXT)
 generate_uudmap$(OBJ_EXT): mg_raw.h
 
 generate_uudmap$(HOST_EXE_EXT): generate_uudmap$(OBJ_EXT)
-	$(CC) -o generate_uudmap$(EXE_EXT) $(LDFLAGS) generate_uudmap$(OBJ_EXT) $(libs)
+	$(LD) -o generate_uudmap$(EXE_EXT) $(LDFLAGS) generate_uudmap$(OBJ_EXT) $(libs)
 
 perlmain.c: $(MINIPERL_EXE) ext/ExtUtils-Miniperl/pm_to_blib
 	$(MINIPERL) -Ilib -MExtUtils::Miniperl -e 'writemain(\"perlmain.c", @ARGV)' DynaLoader $(static_ext)
@@ -729,7 +729,7 @@ $(LIBPERL_NONSHR): $(obj)
 	$(AR) rcu $(LIBPERL_NONSHR) $(obj)
 
 $(MINIPERL_NONSHR): $(LIBPERL_NONSHR) miniperlmain$(OBJ_EXT) opmini$(OBJ_EXT)  perlmini$(OBJ_EXT)
-	$(CC) $(LDFLAGS) -o $(MINIPERL_NONSHR) miniperlmain$(OBJ_EXT) \
+	$(LD) $(LDFLAGS) -o $(MINIPERL_NONSHR) miniperlmain$(OBJ_EXT) \
 	    opmini$(OBJ_EXT) perlmini$(OBJ_EXT) $(LIBPERL_NONSHR) $(LIBS)
 
 MINIPERLEXP		= $(MINIPERL_NONSHR)
@@ -865,7 +865,7 @@ $(MINIPERL_EXE): lib/buildcustomize.pl
 	aix*)
 		$spitshell >>$Makefile <<'!NO!SUBS!'
 lib/buildcustomize.pl: $& $(mini_obj)
-	$(CC) -o $(MINIPERL_EXE) $(CLDFLAGS) $(mini_obj) $(libs)
+	$(LD) -o $(MINIPERL_EXE) $(CLDFLAGS) $(mini_obj) $(libs)
 	$(LDLIBPTH) $(RUN) ./miniperl$(HOST_EXE_EXT) -w -Ilib -Idist/Exporter/lib -MExporter -e '<?>' || sh -c 'echo >&2 Failed to build miniperl.  Please run make minitest; exit 1'
 	$(MINIPERL) -f write_buildcustomize.pl
 !NO!SUBS!
@@ -873,7 +873,7 @@ lib/buildcustomize.pl: $& $(mini_obj)
 	next4*)
 		$spitshell >>$Makefile <<'!NO!SUBS!'
 lib/buildcustomize.pl: $& $(mini_obj) write    ldcustomize.pl
-	$(CC) -o $(MINIPERL_EXE) $(mini_obj    libs)
+	$(LD) -o $(MINIPERL_EXE) $(mini_obj    libs)
 	$(LDLIBPTH) $(RUN) ./miniperl$(HOST    _EXT) -w -Ilib -Idist/Exporter/lib -MExporter -e '<?>' || sh -c 'echo >&2 Failed to build miniperl.  Please run make minitest; exit 1'
 	$(MINIPERL) -f write_buildcustomize.pl    
 !NO!SUBS!
@@ -894,7 +894,7 @@ NAMESPACEFLAGS = -force_flat_namespace
 		$spitshell >>$Makefile <<'!NO!SUBS!'
 lib/buildcustomize.pl: $& $(mini_obj) write_buildcustomize.pl
 	-@rm -f miniperl.xok
-	$(CC) $(CLDFLAGS) $(NAMESPACEFLAGS) -o $(MINIPERL_EXE) \
+	$(LD) $(CLDFLAGS) $(NAMESPACEFLAGS) -o $(MINIPERL_EXE) \
 	    $(mini_obj) $(libs)
 	$(LDLIBPTH) $(RUN) ./miniperl$(HOST_EXE_EXT) -w -Ilib -Idist/Exporter/lib -MExporter -e '<?>' || sh -c 'echo >&2 Failed to build miniperl.  Please run make minitest; exit 1'
 	$(MINIPERL) -f write_buildcustomize.pl
@@ -904,7 +904,7 @@ lib/buildcustomize.pl: $& $(mini_obj) write_buildcustomize.pl
 		$spitshell >>$Makefile <<'!NO!SUBS!'
 lib/buildcustomize.pl: $& $(mini_obj) write_buildcustomize.pl
 	-@rm -f miniperl.xok
-	$(CC) $(CLDFLAGS) -o $(MINIPERL_EXE) \
+	$(LD) $(CLDFLAGS) -o $(MINIPERL_EXE) \
 	    $(mini_obj) $(libs)
 	$(LDLIBPTH) $(RUN) ./miniperl$(HOST_EXE_EXT) -w -Ilib -Idist/Exporter/lib -MExporter -e '<?>' || sh -c 'echo >&2 Failed to build miniperl.  Please run make minitest; exit 1'
 	$(MINIPERL) -f write_buildcustomize.pl
@@ -916,7 +916,7 @@ lib/buildcustomize.pl: $& $(mini_obj) write_buildcustomize.pl
 
 $(PERL_EXE): $& perlmain$(OBJ_EXT) $(LIBPERL) $(static_ext) ext.libs $(PERLEXPORT) write_buildcustomize.pl
 	-@rm -f miniperl.xok
-	$(SHRPENV) $(CC) -o perl $(CLDFLAGS) $(CCDLFLAGS) perlmain$(OBJ_EXT) $(static_ext) $(LLIBPERL) `cat ext.libs` $(libs)
+	$(SHRPENV) $(LD) -o perl $(CLDFLAGS) $(CCDLFLAGS) perlmain$(OBJ_EXT) $(static_ext) $(LLIBPERL) `cat ext.libs` $(libs)
 
 # Microperl.  This is just a convenience thing if one happens to
 # build also the full Perl and therefore the real big Makefile:
