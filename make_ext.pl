@@ -517,6 +517,8 @@ EOS
 			 );
     }
 
+    my @run = @run;
+    @run = () if $^O eq 'llvm';
     if (!$target or $target !~ /clean$/) {
 	# Give makefile an opportunity to rewrite itself.
 	# reassure users that life goes on...

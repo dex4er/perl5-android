@@ -390,6 +390,7 @@ sub constants {
               LIBPERL_A MYEXTLIB
               FIRST_MAKEFILE MAKEFILE_OLD MAKE_APERL_FILE
               PERLMAINCC PERL_SRC PERL_INC
+              RUN
               PERL            FULLPERL          ABSPERL
               PERLRUN         FULLPERLRUN       ABSPERLRUN
               PERLRUNINST     FULLPERLRUNINST   ABSPERLRUNINST
@@ -1953,6 +1954,13 @@ sub init_PERL {
           sprintf q{$(%sRUN) "-I$(INST_ARCHLIB)" "-I$(INST_LIB)"}, $perl;
     }
 
+    if (defined $Config{run} and length $Config{run}) {
+        $self->{RUN} = $Config{run};
+        $self->{PERL} = '$(RUN) ' . $self->{PERL};
+        $self->{ABSPERL} = '$(RUN) ' . $self->{ABSPERL};
+        $self->{FULLPERL} = '$(RUN) ' . $self->{FULLPERL};
+    }
+
     return 1;
 }
 
@@ -2600,6 +2608,7 @@ Returns true, if the argument is likely to be a command.
 
 sub maybe_command {
     my($self,$file) = @_;
+    return $file if defined $Config{run} && length $Config{run} && -r $file && ! -d $file;
     return $file if -x $file && ! -d $file;
     return;
 }

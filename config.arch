@@ -1,0 +1,16 @@
+#!/bin/sh
+
+osname='llvm'
+osvers='3.2'
+
+run='lli'
+
+cc='clang'
+ccflags="$ccflags -emit-llvm"
+
+ld='llvm-link'
+ldflags=''
+perllibs=''
+cryptlib=''
+
+d_procselfexe='undef'
