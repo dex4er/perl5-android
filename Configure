@@ -16473,8 +16473,14 @@ case "$d_readlink" in
 	    type=$1; try=$2
 	    shift; shift
 	    if $issymlink $try; then
+		$ls -l $ls > ls_l_ls
+		if $contains "[-][>]" ls_l_ls; then
+		    real_ls=`cat ls_l_ls | sed -e 's/.* -> //'`
+		else
+		    real_ls=`basename $ls`
+		fi
 		$ls -l $try > reflect
-		if $contains /`basename $ls` reflect >/dev/null 2>&1; then
+		if $contains /$real_ls reflect >/dev/null 2>&1; then
 		    echo "You have $type-like $try."
 		    procselfexe='"'$try'"'
 		    val="$define"
@@ -16485,7 +16491,7 @@ case "$d_readlink" in
 	done
 	;;
 esac
-$rm -f reflect
+$rm -f ls_l_ls reflect
 set d_procselfexe
 eval $setvar
 
